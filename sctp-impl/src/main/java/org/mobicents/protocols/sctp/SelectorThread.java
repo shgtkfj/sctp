@@ -318,6 +318,16 @@ public class SelectorThread implements Runnable {
 						}
 						return;
 					}
+					try {
+					    AssociationImpl tmpAssociation = (AssociationImpl)this.management.getAssociation(anonymAssociation.getPeerAddress() +":"+anonymAssociation.getPeerPort());
+	        				if (tmpAssociation != null) {
+							tmpAssociation.setSocketChannel(socketChannel);
+	        					tmpAssociation.setManagement(this.management);
+	        					anonymAssociation = tmpAssociation;
+	        				}
+					} catch (Exception e) {
+						logger.error(String.format("Rejected anonymous %s", anonymAssociation), e);
+					}
 
 					if (!anonymAssociation.isStarted()) {
 						// connection is rejected
